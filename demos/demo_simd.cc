@@ -70,5 +70,12 @@ int main()
   }
 
   cout << "Select(mask, a, b) = " << Select(mask, a,b) << endl;
-  
+
+  //test division
+  std::cout << b/a <<std::endl;
+  //test subtraction
+  std::cout << a-b << std::endl;
+  //test <=
+  std::cout <<(a<b) << " "<<(a>b) <<std::endl;
+  std::cout <<(a==b) << " "<<(a==a) <<std::endl;
 }
