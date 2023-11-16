@@ -78,4 +78,18 @@ int main()
   // test <=
   std::cout <<"a<b = "<<(a<b) << " a>b = "<<(a>b) <<std::endl;
   std::cout <<"a==b = "<<(a==b) << " a==a ="<<(a==a) <<std::endl;
+
+
+  //test transposition
+  SIMD<double,4> a0(1.,2.,3.,4.);
+  SIMD<double,4> a1(5.,6.,7.,8.);
+  SIMD<double,4> a2(9.,10.,11.,12.);
+  SIMD<double,4> a3(13.,14.,15.,16.);
+  SIMD<double,4> b0(1.,2.,3.,4.);
+  SIMD<double,4> b1(5.,6.,7.,8.);
+  SIMD<double,4> b2(9.,10.,11.,12.);
+  SIMD<double,4> b3(13.,14.,15.,16.);
+  Transpose(a0, a1, a2, a3, b0, b1, b2, b3);
+  cout<<b0<<endl<<b1<<endl<<b2<<endl<<b3<<endl;
+
 }

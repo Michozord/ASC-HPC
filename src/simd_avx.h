@@ -179,7 +179,7 @@ template<>
   
   inline auto operator* (SIMD<double,4> a, SIMD<double,4> b) { return SIMD<double,4> (_mm256_mul_pd(a.Val(), b.Val())); }
   inline auto operator* (double a, SIMD<double,4> b) { return SIMD<double,4>(a)*b; }
-  
+
   
 #ifdef __FMA__
   inline SIMD<double,4> FMA (SIMD<double,4> a, SIMD<double,4> b, SIMD<double,4> c)
@@ -192,6 +192,34 @@ template<>
   
   inline auto operator>= (SIMD<double,4> a, SIMD<double,4> b)
   { return SIMD<mask64,4>(_mm256_cmp_pd (a.Val(), b.Val(), _CMP_GE_OQ)); }
+
+
+  void Transpose (SIMD<double,4> a0, SIMD<double,4> a1, SIMD<double,4> a2, SIMD<double,4> a3,
+              SIMD<double,4> &b0, SIMD<double,4> &b1, SIMD<double,4> &b2, SIMD<double,4> &b3){
+                /*
+                for matrix 
+
+                1 2 3 4 
+                5 6 7 8
+                9 10 11 12 
+                13 14 15 16
+
+                holds:
+
+                part 1 = 1, 5, 3, 7
+                part 2 = 2, 6, 4, 8
+                part 3 = 9, 13, 11, 15
+                part 4 = 10, 14, 12, 16
+                */
+                __m256d part1 = _mm256_unpacklo_pd(a0.Val(), a1.Val());
+                __m256d part2 = _mm256_unpackhi_pd(a0.Val(), a1.Val());
+                __m256d part3 = _mm256_unpacklo_pd(a2.Val(), a3.Val());
+                __m256d part4 = _mm256_unpackhi_pd(a2.Val(), a3.Val());
+                b0 = _mm256_insertf128_pd(_mm256_castpd128_pd256(_mm256_extractf128_pd(part1, 0)), _mm256_extractf128_pd(part3, 0), 1);
+                b2 = _mm256_insertf128_pd(_mm256_castpd128_pd256(_mm256_extractf128_pd(part1, 1)), _mm256_extractf128_pd(part3, 1), 1);
+                b1 = _mm256_insertf128_pd(_mm256_castpd128_pd256(_mm256_extractf128_pd(part2, 0)), _mm256_extractf128_pd(part4, 0), 1);
+                b3 = _mm256_insertf128_pd(_mm256_castpd128_pd256(_mm256_extractf128_pd(part2, 1)), _mm256_extractf128_pd(part4, 1), 1);
+              }
   
 
   
