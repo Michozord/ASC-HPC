@@ -152,30 +152,42 @@ namespace ASC_HPC
   template <typename T, size_t S>
   auto operator+ (SIMD<T,S> a, SIMD<T,S> b) { return SIMD<T,S> (a.Lo()+b.Lo(), a.Hi()+b.Hi()); }
   template <typename T>
+  auto operator+ (SIMD<T,2> a, SIMD<T,2> b) { return SIMD<T,2> (a[0]+b[0], a[1]+b[1]); }
+  template <typename T>
   auto operator+ (SIMD<T,1> a, SIMD<T,1> b) { return SIMD<T,1> (a.Val()+b.Val()); }
 
   template <typename T, size_t S>
   auto operator- (SIMD<T,S> a, SIMD<T,S> b) { return SIMD<T,S> (a.Lo()-b.Lo(), a.Hi()-b.Hi()); }
+  template <typename T>
+  auto operator- (SIMD<T,2> a, SIMD<T,2> b) { return SIMD<T,2> (a[0]-b[0], a[1]-b[1]); }
   template <typename T>
   auto operator- (SIMD<T,1> a, SIMD<T,1> b) { return SIMD<T,1> (a.Val()-b.Val()); }
 
   template <typename T, size_t S>
   auto operator* (SIMD<T,S> a, SIMD<T,S> b) { return SIMD<T,S> (a.Lo()*b.Lo(), a.Hi()*b.Hi()); }
   template <typename T>
+  auto operator* (SIMD<T,2> a, SIMD<T,2> b) { return SIMD<T,2> (a[0]*b[0], a[1]*b[1]); }
+  template <typename T>
   auto operator* (SIMD<T,1> a, SIMD<T,1> b) { return SIMD<T,1> (a.Val()*b.Val()); }
   
   template <typename T, size_t S>
   auto operator* (double a, SIMD<T,S> b) { return SIMD<T,S> (a*b.Lo(), a*b.Hi()); }
+  template <typename T>
+  auto operator* (double a, SIMD<T,2> b) { return SIMD<T,2> (a*b[0], a*b[1]); }
   template <typename T>
   auto operator* (double a, SIMD<T,1> b) { return SIMD<T,1> (a*b.Val()); }
 
   template <typename T, size_t S>
   auto operator/ (SIMD<T,S> a, SIMD<T,S> b) {return SIMD<T,S> (a.Lo()/b.Lo(), a.Hi()/b.Hi());}
   template <typename T>
+  auto operator/ (SIMD<T,2> a, SIMD<T,2> b) { return SIMD<T,2> (a[0]/b[0], a[1]/b[1]); }
+  template <typename T>
   auto operator/ (SIMD<T,1> a, SIMD<T,1> b) { return SIMD<T,1> (a.Val()/b.Val()); }
 
   template <typename T, size_t S>
   auto operator/ (SIMD<T,S> a, double b) {return SIMD<T,S> (a.Lo()/b, a.Hi()/b);}
+  template <typename T>
+  auto operator/ (SIMD<T,2> a, double b) {return SIMD<T,2> (a[0]/b, a[1]/b);}
   template <typename T>
   auto operator/ (SIMD<T,1> a, double b) { return SIMD<T,1> (a.Val()/b); }
 
@@ -197,12 +209,19 @@ namespace ASC_HPC
   auto HSum (SIMD<T,S> a) { return HSum(a.Lo())+HSum(a.Hi()); }
 
   template <typename T>
+  auto HSum (SIMD<T,2> a) { return a[0] + a[1]; }
+
+  template <typename T>
   auto HSum (SIMD<T,1> a) { return a.Val(); }
   
   
   template <typename T, size_t S>
   auto HSum (SIMD<T,S> a0, SIMD<T,S> a1)
   { return HSum(a0.Lo(), a1.Lo())+HSum(a0.Hi(), a1.Hi()); }
+
+  template <typename T>
+  auto HSum(SIMD<T,2> a0, SIMD<T,2> a1)
+  { return SIMD<T,2> (a0[0] + a0[1], a1[0] + a1[1]); }
 
   template <typename T>
   auto HSum(SIMD<T,1> a0, SIMD<T,1> a1)
@@ -247,6 +266,10 @@ namespace ASC_HPC
   { return SIMD<mask64,S>(a.Lo()>=b.Lo(), a.Hi()>=b.Hi()); }
 
   template <typename T>
+  auto operator>= (SIMD<T,2> a, SIMD<T,2> b)
+  { return SIMD<mask64,2>(a[0]>=b[0], a[1]>=b[1]); }
+
+  template <typename T>
   auto operator>= (SIMD<T,1> a, SIMD<T,1> b)
   { return SIMD<mask64,1>(a.Val()>=b.Val()); }
 
@@ -257,6 +280,10 @@ namespace ASC_HPC
   template <typename T, size_t S>
   auto operator<= (SIMD<T,S> a, SIMD<T,S> b)
   { return SIMD<mask64,S>(a.Lo()<=b.Lo(), a.Hi()<=b.Hi()); }
+
+  template <typename T>
+  auto operator<= (SIMD<T,2> a, SIMD<T,2> b)
+  { return SIMD<mask64,2>(a[0]<=b[0], a[1]<=b[1]); }
 
   template <typename T>
   auto operator<= (SIMD<T,1> a, SIMD<T,1> b)
@@ -272,6 +299,10 @@ namespace ASC_HPC
   { return SIMD<mask64,S>(a.Lo()>b.Lo(), a.Hi()>b.Hi()); }
 
   template <typename T>
+  auto operator> (SIMD<T,2> a, SIMD<T,2> b)
+  { return SIMD<mask64,2>(a[0] > b[0], a[1] > b[1]); }
+
+  template <typename T>
   auto operator> (SIMD<T,1> a, SIMD<T,1> b)
   { return SIMD<mask64,1>(a.Val()>b.Val()); }
 
@@ -282,6 +313,10 @@ namespace ASC_HPC
   template <typename T, size_t S>
   auto operator< (SIMD<T,S> a, SIMD<T,S> b)
   { return SIMD<mask64,S>(a.Lo()<b.Lo(), a.Hi()<b.Hi()); }
+
+  template <typename T>
+  auto operator< (SIMD<T,2> a, SIMD<T,2> b)
+  { return SIMD<mask64,2>(a[0] < b[0], a[1] < b[1]); }
 
   template <typename T>
   auto operator< (SIMD<T,1> a, SIMD<T,1> b)
@@ -295,6 +330,10 @@ namespace ASC_HPC
   template <typename T, size_t S>
   auto operator== (SIMD<T,S> a, SIMD<T,S> b)
   { return SIMD<mask64,S>(a.Lo()==b.Lo(), a.Hi()==b.Hi()); }
+
+  template <typename T>
+  auto operator== (SIMD<T,2> a, SIMD<T,2> b)
+  { return SIMD<mask64,2>(a[0]==b[0], a[1] == b[1]); }
 
   template <typename T>
   auto operator== (SIMD<T,1> a, SIMD<T,1> b)

@@ -49,10 +49,11 @@ int main()
 {
   SIMD<double,4> a(1.,2.,3.,4.);
   SIMD<double,4> b(1.0);
-  
+
   cout << "a = " << a << endl;
   cout << "b = " << b << endl;
   cout << "a+b = " << a+b << endl;
+  cout << "a-b = " << a-b << endl;
 
   cout << "HSum(a) = " << HSum(a) << endl;
   cout << "HSum(a,b) = " << HSum(a,b) << endl;
@@ -72,10 +73,9 @@ int main()
   cout << "Select(mask, a, b) = " << Select(mask, a,b) << endl;
 
   //test division
-  std::cout << b/a <<std::endl;
-  //test subtraction
-  std::cout << a-b << std::endl;
-  //test <=
-  std::cout <<(a<b) << " "<<(a>b) <<std::endl;
-  std::cout <<(a==b) << " "<<(a==a) <<std::endl;
+  std::cout << "b/a = "<< b/a <<std::endl;
+  std::cout << "b/2 = "<< b/2. <<std::endl;
+  // test <=
+  std::cout <<"a<b = "<<(a<b) << " a>b = "<<(a>b) <<std::endl;
+  std::cout <<"a==b = "<<(a==b) << " a==a ="<<(a==a) <<std::endl;
 }
