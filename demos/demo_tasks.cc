@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-
+#include <atomic>
 
 #include <taskmanager.h>
 #include <timer.h>
@@ -36,6 +36,19 @@ int main()
     });
   });
 
+  std::cout<<"Our lock:"<<std::endl;
+  std::atomic<bool> mut=false;
+  
+  RunParallel(10, [&mut] (int i, int size) {
+      bool oldval = false;
+      while (!mut.compare_exchange_strong(oldval, true))
+      {
+        oldval = false;
+      }
+      cout << "I am task " << i << " out of " << size << endl;
+      mut = false;
+      
+  });
 
 
   
