@@ -1,7 +1,7 @@
 #include <chrono>
 #include <thread>
 
-#include <concurrentqueue.h>
+#include "../concurrentqueue/concurrentqueue.h"
 
 #include "taskmanager.h"
 #include "timer.h"
